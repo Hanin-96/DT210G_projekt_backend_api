@@ -5,10 +5,10 @@ const Joi = require("joi");
 
 
 //Admin routes
-const adminRouteArr = [
+const userRouteArr = [
     {
         method: 'POST',
-        path: '/adduser',
+        path: '/user',
         //Validering med Joi
         options: {
             auth: false,
@@ -27,7 +27,7 @@ const adminRouteArr = [
                 }
             }
         },
-        handler: adminController.addNewUser
+        handler: userController.addNewUser
     },
     {
         method: 'POST',
@@ -46,20 +46,20 @@ const adminRouteArr = [
                 }
             }
         },
-        handler: adminController.loginUser
+        handler: userController.loginUser
     },
     {
         method: 'GET',
-        path: '/admin',
-        handler: adminController.getSecretData
+        path: '/userpage',
+        handler: userController.getUserPage
     },
     {
         method: 'GET',
-        path: '/admin/logout',
+        path: '/userpage/logout',
         options: {
             auth: false,
         },
-        handler: adminController.logoutUser
+        handler: userController.logoutUser
     },
 ]
 
