@@ -5,6 +5,8 @@ const Hapi = require("@hapi/hapi");
 
 //Hämtar route
 const userRoute = require('./routes/user.route');
+const bookRoute = require('./routes/book.route');
+const reviewRoute = require('./routes/review.route');
 
 //Hämtar auth
 const auth = require('./auth/authentication');
@@ -40,9 +42,14 @@ const init = async () => {
     // Registrerar JWT auth strategin
     await auth.register(server);
 
-    /*databaseConnection2();*/
-
+    //User route
     server.route(userRoute);
+
+    //Book route
+    server.route(bookRoute);
+
+    //Review route
+    server.route(reviewRoute);
 
     await server.start();
     console.log('Server running on %s', server.info.uri);

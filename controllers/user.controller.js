@@ -88,12 +88,13 @@ exports.getUserPage = async (request, h) => {
         //Om användare finns, hämta username
         const username = decodedToken.decoded.payload.user.username;
 
-        console.log("decodedtoken:", decodedToken)
+        const userId = decodedToken.decoded.payload.user._id;
 
-        console.log("user from decoded token:", username)
+        //console.log("decodedtoken:", decodedToken)
+        //console.log("user:", userId)
 
-        // Fetch user data from the database if needed
-        //const user = await User.findById(user._id);
+        //console.log("user från decoded token:", username)
+
 
         if (!username) {
             return h.response({ message: "Användare hittades inte" }).code(404);
@@ -101,7 +102,8 @@ exports.getUserPage = async (request, h) => {
 
         return h.response({
             message: "Du har tillgång till secret data",
-            username: username
+            username: username,
+            userId: userId
         }).code(200);
 
     } catch (err) {
