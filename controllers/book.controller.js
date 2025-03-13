@@ -1,3 +1,5 @@
+const Review = require("../models/review.model");
+
 //Användning av .env fil för användning av variabler
 require("dotenv").config();
 
@@ -56,5 +58,8 @@ exports.getBookById = async (request, h) => {
     console.log("Bokdata", data)
     console.log("Bokdata items", data.items)
     return h.response(data);
-
 }
+
+
+
+

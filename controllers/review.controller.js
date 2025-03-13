@@ -45,8 +45,34 @@ exports.addReview = async (request, h) => {
 //Hämta alla reviews
 exports.getAllReviews = async (request, h) => {
     const reviews = await Review.find().populate("userId", "username firstname lastname");
-    
+
     //Returnera alla reviews
     return h.response({ reviews: reviews });
 
 }
+
+//Hämta reviews för specifik bok
+exports.getReviewsByBook = async (request, h) => {
+    try {
+        const bookId = request.params.id;
+        console.log("Book ID from request:", bookId);
+
+        const reviews = await Review.find({ bookId })
+
+        console.log("Bokrecensioner", reviews)
+
+        if (!reviews.length > 0) {
+            return h.response({ message: "Inga recensioner hittades för boken" }).code(404);
+        }
+
+        console.log("Bokrecensioner", reviews)
+
+        return h.response({
+            reviews: reviews
+        }).code(200);
+
+    } catch (error) {
+        return h.response({ message: "Serverfel, inga recensioner hittades för boken" }).code(500);
+    }
+}
+

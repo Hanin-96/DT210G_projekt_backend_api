@@ -11,7 +11,6 @@ const reviewRouteArr = [
         path: '/review',
         //Validering med Joi
         options: {
-            auth: false,
             validate: {
                 //Objekt som valideras och skickas med
                 payload: Joi.object({
@@ -26,7 +25,7 @@ const reviewRouteArr = [
                 }),
                 failAction: (request, h, err) => {
                     //Error meddelande om validering misslyckas
-                    return h.response({error: err.message}).code(400).takeover();
+                    return h.response({ error: err.message }).code(400).takeover();
                 }
             }
         },
@@ -41,7 +40,16 @@ const reviewRouteArr = [
         },
         handler: reviewController.getAllReviews
     },
-    
+    {
+        //Hämta reviews
+        method: 'GET',
+        path: '/reviews/{id}/book',
+        options: {
+            auth: false
+        },
+        handler: reviewController.getReviewsByBook
+    }
+
 ]
 
 //Exporterar route array
