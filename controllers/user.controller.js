@@ -47,16 +47,14 @@ exports.loginUser = async (request, h) => {
             //Generera token
             const token = generateToken(user);
 
-            const response = {
-                message: "Användare är inloggad",
-                token: token,
-                user: user
-            }
-
             console.log("user", user)
             //console.log("Du är inloggad");
             return h
-                .response({ message: 'Du är inloggad' })
+                .response({ 
+                    message: 'Du är inloggad',
+                    user: user,
+                    token: token
+                 })
                 //Skapar http Cookie
                 .state('jwt', token)
         }
@@ -90,8 +88,10 @@ exports.getUserPage = async (request, h) => {
 
         const userId = decodedToken.decoded.payload.user._id;
 
+        const user = decodedToken.decoded.payload.user;
+
         //console.log("decodedtoken:", decodedToken)
-        //console.log("user:", userId)
+        console.log("user:", user)
 
         //console.log("user från decoded token:", username)
 
@@ -103,7 +103,8 @@ exports.getUserPage = async (request, h) => {
         return h.response({
             message: "Du har tillgång till secret data",
             username: username,
-            userId: userId
+            userId: userId,
+            user: user
         }).code(200);
 
     } catch (err) {

@@ -8,7 +8,7 @@ const Joi = require("joi");
 const userRouteArr = [
     {
         method: 'POST',
-        path: '/user',
+        path: '/register',
         //Validering med Joi
         options: {
             auth: false,
@@ -55,7 +55,7 @@ const userRouteArr = [
     },
     {
         method: 'GET',
-        path: '/userpage/logout',
+        path: '/logout',
         options: {
             auth: false,
         },

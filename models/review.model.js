@@ -32,6 +32,10 @@ const reviewSchema = new Mongoose.Schema({
         type: Boolean,
         required: false,
     },
+    like: {
+        type: Number,
+        required: false
+    },
     userId: {
         type: Mongoose.Schema.Types.ObjectId,
         ref: 'User',

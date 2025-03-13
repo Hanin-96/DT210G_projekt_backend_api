@@ -20,6 +20,7 @@ const reviewRouteArr = [
                     pagesRead: Joi.number().min(1),
                     status: Joi.string(),
                     recommend: Joi.boolean(),
+                    like: Joi.number(),
                     userId: Joi.any().required(),
                     bookId: Joi.string().required()
                 }),
@@ -30,6 +31,15 @@ const reviewRouteArr = [
             }
         },
         handler: reviewController.addReview
+    },
+    {
+        method: 'GET',
+        path: '/reviews',
+        //Validering med Joi
+        options: {
+            auth: false
+        },
+        handler: reviewController.getAllReviews
     },
     
 ]

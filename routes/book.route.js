@@ -8,12 +8,20 @@ const Joi = require("joi");
 const bookRouteArr = [
     {
         method: 'GET',
-        path: '/book/{query}',
+        path: '/books/{query}',
         //Validering med Joi
         options: {
             auth: false
         },
         handler: bookController.getBooks
+    },
+    {
+        method: 'GET',
+        path: '/book/{bookId}',
+        options: {
+            auth: false
+        },
+        handler: bookController.getBookById
     },
     
 ]

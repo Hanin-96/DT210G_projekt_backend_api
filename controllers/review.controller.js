@@ -2,11 +2,11 @@
 const Review = require("../models/review.model");
 
 
-//Lägger till ny user
+//Lägger till ny review
 exports.addReview = async (request, h) => {
     try {
         console.log("testar om addReview kallas...")
-        const { reviewText, rating, pagesRead, status, recommend, userId, bookId } = request.payload;
+        const { reviewText, rating, pagesRead, status, recommend, like, userId, bookId } = request.payload;
 
         const review = new Review({
             reviewText,
@@ -14,6 +14,7 @@ exports.addReview = async (request, h) => {
             pagesRead,
             status,
             recommend,
+            like,
             userId,
             bookId
         });
@@ -41,6 +42,11 @@ exports.addReview = async (request, h) => {
     }
 }
 
+//Hämta alla reviews
 exports.getAllReviews = async (request, h) => {
+    const reviews = await Review.find().populate("userId", "username firstname lastname");
+    
+    //Returnera alla reviews
+    return h.response({ reviews: reviews });
 
 }
