@@ -14,7 +14,7 @@ const reviewSchema = new Mongoose.Schema({
     },
     rating: {
         type: Number,
-        required: false,
+        required: true,
         min: 1,
         max: 5,
     },
@@ -24,7 +24,7 @@ const reviewSchema = new Mongoose.Schema({
     },
     status: {
         type: String,
-        required: false,
+        required: true,
         unique: false,
         trim: true
     },

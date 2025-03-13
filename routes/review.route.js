@@ -15,11 +15,11 @@ const reviewRouteArr = [
                 //Objekt som valideras och skickas med
                 payload: Joi.object({
                     reviewText: Joi.string().min(2).required(),
-                    rating: Joi.number().min(1).max(5),
-                    pagesRead: Joi.number().min(1),
-                    status: Joi.string(),
-                    recommend: Joi.boolean(),
-                    like: Joi.number(),
+                    rating: Joi.number().min(1).max(5).required(),
+                    pagesRead: Joi.number().min(1).default(1),
+                    status: Joi.string().required(),
+                    recommend: Joi.boolean().default(""),
+                    like: Joi.number().default(0),
                     userId: Joi.any().required(),
                     bookId: Joi.string().required()
                 }),
@@ -48,6 +48,12 @@ const reviewRouteArr = [
             auth: false
         },
         handler: reviewController.getReviewsByBook
+    },
+    {
+        //Ta bort review
+        method: 'DELETE',
+        path: '/review/{_id}',
+        handler: reviewController.deleteReview
     }
 
 ]
