@@ -10,33 +10,47 @@ const bookKey = process.env.GOOGLE_API_KEY_BOOKS;
 exports.getBooks = async (request, h) => {
     try {
 
-        let query = "";
+        const { title } = request.query;
 
-        //Sök query
-        const { title, author, bookId } = request.query;
-
-        if (title) {
-            query += `intitle:${title}`;
+        if (!title) {
+            return h.response({ message: "Ange titel att söka på" }).code(400);
         }
 
-        if (author) {
-            query += `inauthor:${author}`;
+        const query = `intitle:${title}`;
+
+
+        console.log("Sökquery:", query);
+
+
+        if (!query) {
+            return h.response({ message: "Det finns ingen sökparameter" }).code(400);
         }
 
-        if (bookId) {
-            query += `id:${bookId}`;
-        }
 
-        const bookSearch = request.params.query;
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${bookSearch}&key=${bookKey}`);
+        //const bookSearch = request.params.query;
+        const encodedQuery = encodeURIComponent(query);
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodedQuery}&key=${bookKey}`);
 
         if (!response.ok) {
             throw new Error("Misslyckades, kunde inte hämta böcker...")
         }
 
         const data = await response.json();
-        console.log("Data", data)
-        return h.response(data);
+
+        // Filtrera utifrån titel på books
+        const filteredBooks = data.items?.map(item => ({
+            id: item.id,
+            title: item.volumeInfo.title,
+            authors: item.volumeInfo.authors,
+            description: item.volumeInfo.description ? item.volumeInfo.description : "Beskrivning är inte tillgänglig",
+            thumbnail: item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail
+                ? item.volumeInfo.imageLinks.thumbnail
+                : "Bild är inte tillgänglig",
+            infoLink: item.volumeInfo.infoLink
+        })) || [];
+
+        return h.response(filteredBooks);
+
 
     } catch (error) {
         return h.response({ error: error.message }).code(500);
@@ -55,8 +69,16 @@ exports.getBookById = async (request, h) => {
     }
 
     const data = await response.json();
-    console.log("Bokdata", data)
-    console.log("Bokdata items", data.items)
+
+    const bookInfo = data.items.map(item => ({
+        title: item.volumeInfo.title,
+        description: item.volumeInfo.description ? item.volumeInfo.description : "Beskrivning är inte tillgänglig",
+        thumbnail: item.volumeInfo.imageLinks.thumbnail ? item.volumeInfo.imageLinks.thumbnail : "Bild är inte tillgänglig",
+        authors: item.volumeInfo.authors[0]
+    }));
+
+    console.log("Bokinformation:", bookInfo)
+
     return h.response(data);
 }
 

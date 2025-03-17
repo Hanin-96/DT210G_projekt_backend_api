@@ -50,6 +50,12 @@ const reviewRouteArr = [
         handler: reviewController.getReviewsByBook
     },
     {
+        //Hämta reviews utifrån user
+        method: 'GET',
+        path: '/reviews/{userId}',
+        handler: reviewController.getReviewsByBook
+    },
+    {
         //Ta bort review
         method: 'DELETE',
         path: '/review/{_id}',

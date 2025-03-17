@@ -23,7 +23,7 @@ const init = async () => {
         host: 'localhost',
         routes: {
             cors: {
-                origin: ['http://localhost:5173'],
+                origin: ['*'],
                 credentials: true,
                 maxAge: 86400,
                 headers:

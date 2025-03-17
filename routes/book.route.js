@@ -8,7 +8,7 @@ const Joi = require("joi");
 const bookRouteArr = [
     {
         method: 'GET',
-        path: '/books/{query}',
+        path: '/books',
         //Validering med Joi
         options: {
             auth: false

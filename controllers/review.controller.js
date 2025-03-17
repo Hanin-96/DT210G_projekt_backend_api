@@ -79,6 +79,10 @@ exports.getReviewsByBook = async (request, h) => {
     }
 }
 
+exports.getReviewsByUser = async (request, h) => {
+
+}
+
 //Ta bort en bok review
 exports.deleteReview = async (request, h) => {
     try {
@@ -130,4 +134,6 @@ exports.deleteReview = async (request, h) => {
     }
 
 }
+
+//Uppdatera en bok review
 
