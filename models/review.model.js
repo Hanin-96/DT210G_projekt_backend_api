@@ -18,10 +18,6 @@ const reviewSchema = new Mongoose.Schema({
         min: 1,
         max: 5,
     },
-    pagesRead: {
-        type: Number,
-        required: false,
-    },
     status: {
         type: String,
         required: true,
@@ -32,10 +28,10 @@ const reviewSchema = new Mongoose.Schema({
         type: Boolean,
         required: false,
     },
-    like: {
-        type: Number,
-        required: false
-    },
+    like: [{
+        type: Mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
     userId: {
         type: Mongoose.Schema.Types.ObjectId,
         ref: 'User',

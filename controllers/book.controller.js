@@ -4,7 +4,7 @@ const Review = require("../models/review.model");
 require("dotenv").config();
 
 //Google Api nyckel
-const bookKey = process.env.GOOGLE_API_KEY_BOOKS;
+const bookKey = process.env.GOOGLE_API_KEY_BOOKS1;
 
 //Hämta böcker
 exports.getBooks = async (request, h) => {
@@ -31,6 +31,7 @@ exports.getBooks = async (request, h) => {
         const encodedQuery = encodeURIComponent(query);
         const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodedQuery}&key=${bookKey}`);
 
+        console.log(response);
         if (!response.ok) {
             throw new Error("Misslyckades, kunde inte hämta böcker...")
         }
@@ -42,10 +43,10 @@ exports.getBooks = async (request, h) => {
             id: item.id,
             title: item.volumeInfo.title,
             authors: item.volumeInfo.authors,
-            description: item.volumeInfo.description ? item.volumeInfo.description : "Beskrivning är inte tillgänglig",
+            description: item.volumeInfo.description ? item.volumeInfo.description : "",
             thumbnail: item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail
                 ? item.volumeInfo.imageLinks.thumbnail
-                : "Bild är inte tillgänglig",
+                : "",
             infoLink: item.volumeInfo.infoLink
         })) || [];
 
@@ -60,9 +61,14 @@ exports.getBooks = async (request, h) => {
 
 //Hämta specifik bok med bookId
 exports.getBookById = async (request, h) => {
-    const { bookId } = request.params
+    const { bookId } = request.params;
 
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${bookId}&key=${bookKey}`);
+    if (!bookId) {
+        console.error("bookId saknas...");
+        return h.response({ error: "bookId saknas..." }).code(400);
+    }
+
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${bookKey}`);
 
     if (!response.ok) {
         throw new Error("Misslyckades, kunde inte hämta boken...")
@@ -70,16 +76,18 @@ exports.getBookById = async (request, h) => {
 
     const data = await response.json();
 
-    const bookInfo = data.items.map(item => ({
-        title: item.volumeInfo.title,
-        description: item.volumeInfo.description ? item.volumeInfo.description : "Beskrivning är inte tillgänglig",
-        thumbnail: item.volumeInfo.imageLinks.thumbnail ? item.volumeInfo.imageLinks.thumbnail : "Bild är inte tillgänglig",
-        authors: item.volumeInfo.authors[0]
-    }));
+    const bookInfo = {
+        id: data.id,
+        title: data.volumeInfo?.title || "Ingen titel",
+        description: data.volumeInfo?.description || "",
+        thumbnail: data.volumeInfo?.imageLinks?.thumbnail || "",
+        authors: data.volumeInfo?.authors || [],
+        infoLink: data.volumeInfo?.infoLink || ""
+    };
 
     console.log("Bokinformation:", bookInfo)
 
-    return h.response(data);
+    return h.response(bookInfo);
 }
 
 

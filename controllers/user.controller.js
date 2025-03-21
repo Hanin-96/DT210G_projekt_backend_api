@@ -9,6 +9,15 @@ const Jwt = require('@hapi/jwt');
 exports.addNewUser = async (request, h) => {
     try {
         const user = new User(request.payload);
+
+        const email = user.email;
+        const emailExists = await User.findOne({email});
+
+        if(emailExists) {
+            return h.response({message: "E-post finns redan"}).code(400)
+        }
+        
+
         const newUser = await user.save();
         return h.response({
             message: "Ny användare har lagrats:",
