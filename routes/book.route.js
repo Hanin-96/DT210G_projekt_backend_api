@@ -1,8 +1,5 @@
 const bookController = require("../controllers/book.controller");
 
-//Valideringspaket
-const Joi = require("joi");
-
 
 //Admin routes
 const bookRouteArr = [

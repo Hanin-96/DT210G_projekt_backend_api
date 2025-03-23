@@ -4,7 +4,7 @@ const Review = require("../models/review.model");
 require("dotenv").config();
 
 //Google Api nyckel
-const bookKey = process.env.GOOGLE_API_KEY_BOOKS1;
+const bookKey = process.env.GOOGLE_API_KEY_BOOKS;
 
 //Hämta böcker
 exports.getBooks = async (request, h) => {
