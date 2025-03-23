@@ -83,7 +83,7 @@ exports.getBookById = async (request, h) => {
         title: data.volumeInfo?.title || "Ingen titel",
         description: data.volumeInfo?.description || "",
         thumbnail: data.volumeInfo?.imageLinks?.thumbnail || "",
-        pageCount: data.item.volumeInfo?.pageCount || 0,
+        pageCount: data.volumeInfo?.pageCount || 0,
         authors: data.volumeInfo?.authors || [],
         infoLink: data.volumeInfo?.infoLink || ""
     };
