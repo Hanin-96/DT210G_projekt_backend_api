@@ -42,7 +42,7 @@ exports.getBooks = async (request, h) => {
         const filteredBooks = data.items?.map(item => ({
             id: item.id,
             title: item.volumeInfo.title,
-            authors: item.volumeInfo.authors,
+            authors: item.volumeInfo?.authors || [],
             description: item.volumeInfo.description ? item.volumeInfo.description : "",
             thumbnail: item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail
                 ? item.volumeInfo.imageLinks.thumbnail
