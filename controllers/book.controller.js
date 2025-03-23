@@ -37,6 +37,7 @@ exports.getBooks = async (request, h) => {
         }
 
         const data = await response.json();
+        console.log("data books backend:", data)
 
         // Filtrera utifrån titel på books
         const filteredBooks = data.items?.map(item => ({
@@ -47,6 +48,7 @@ exports.getBooks = async (request, h) => {
             thumbnail: item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail
                 ? item.volumeInfo.imageLinks.thumbnail
                 : "",
+            pageCount: item.volumeInfo.pageCount,
             infoLink: item.volumeInfo.infoLink
         })) || [];
 
@@ -81,6 +83,7 @@ exports.getBookById = async (request, h) => {
         title: data.volumeInfo?.title || "Ingen titel",
         description: data.volumeInfo?.description || "",
         thumbnail: data.volumeInfo?.imageLinks?.thumbnail || "",
+        pageCount: item.volumeInfo?.pageCount || 0,
         authors: data.volumeInfo?.authors || [],
         infoLink: data.volumeInfo?.infoLink || ""
     };
