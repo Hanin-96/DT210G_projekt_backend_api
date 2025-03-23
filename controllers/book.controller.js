@@ -19,7 +19,7 @@ exports.getBooks = async (request, h) => {
         const query = `intitle:${title}`;
 
 
-        console.log("Sökquery:", query);
+        //console.log("Sökquery:", query);
 
 
         if (!query) {
@@ -31,13 +31,13 @@ exports.getBooks = async (request, h) => {
         const encodedQuery = encodeURIComponent(query);
         const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodedQuery}&key=${bookKey}`);
 
-        console.log(response);
+        //console.log(response);
         if (!response.ok) {
             throw new Error("Misslyckades, kunde inte hämta böcker...")
         }
 
         const data = await response.json();
-        console.log("data books backend:", data)
+        //console.log("data books backend:", data)
 
         // Filtrera utifrån titel på books
         const filteredBooks = data.items?.map(item => ({
@@ -88,7 +88,7 @@ exports.getBookById = async (request, h) => {
         infoLink: data.volumeInfo?.infoLink || ""
     };
 
-    console.log("Bokinformation:", bookInfo)
+    //console.log("Bokinformation:", bookInfo)
 
     return h.response(bookInfo);
 }

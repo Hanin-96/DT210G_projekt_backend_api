@@ -56,7 +56,7 @@ exports.loginUser = async (request, h) => {
             //Generera token
             const token = generateToken(user);
 
-            console.log("user", user)
+            //console.log("user", user)
             //console.log("Du är inloggad");
             return h
                 .response({ 
@@ -79,7 +79,7 @@ exports.getUserPage = async (request, h) => {
         //Hämtar token från cookie
         const token = request.state.jwt;
 
-        console.log("Hämtar token", token)
+        //console.log("Hämtar token", token)
         if (!token) {
             return h.response({ message: "Ingen token hittades" }).code(401);
         }
@@ -100,7 +100,7 @@ exports.getUserPage = async (request, h) => {
         const user = decodedToken.decoded.payload.user;
 
         //console.log("decodedtoken:", decodedToken)
-        console.log("user:", user)
+        //console.log("user:", user)
 
         //console.log("user från decoded token:", username)
 

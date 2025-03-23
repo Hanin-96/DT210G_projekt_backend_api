@@ -9,7 +9,7 @@ const Jwt = require('@hapi/jwt');
 //Lägger till ny review
 exports.addReview = async (request, h) => {
     try {
-        console.log("testar om addReview kallas...")
+        //console.log("testar om addReview kallas...")
         const { reviewText, rating, status, recommend, userId, bookId } = request.payload;
 
         const review = new Review({
@@ -21,7 +21,7 @@ exports.addReview = async (request, h) => {
             bookId
         });
 
-        console.log("testar", review)
+        //console.log("testar", review)
 
         //Hämtar token från cookie
         const token = request.state.jwt;
@@ -43,7 +43,7 @@ exports.addReview = async (request, h) => {
 
         const newReview = await review.save();
 
-        console.log("Review saved", newReview);
+        //console.log("Review saved", newReview);
 
         return h.response({
             message: "Ny recension har lagts till",
@@ -70,7 +70,7 @@ exports.getReviewsByBook = async (request, h) => {
 
         const reviews = await Review.find({ bookId }).populate("userId", "username firstname lastname");
 
-        console.log("Bokrecensioner", reviews);
+        //console.log("Bokrecensioner", reviews);
 
         return h.response({
             reviews: reviews
@@ -95,10 +95,10 @@ exports.getReviewsByUser = async (request, h) => {
 
         //Hämta userId från token
         const userIdFromToken = await getUserId(token);
-        console.log("token", token)
+        //console.log("token", token)
 
         const userExists = await User.findById(userId);
-        console.log("Userexists:", userExists)
+        //console.log("Userexists:", userExists)
 
         if (!userExists || userExists._id != userIdFromToken) {
             return h.response({ message: "Användaren har inte tillgång till recensionerna" }).code(403);
@@ -110,7 +110,7 @@ exports.getReviewsByUser = async (request, h) => {
         if (reviewsByUserId.length === 0) {
             return h.response({ message: "Inga recensioner hittades för användaren" }).code(404);
         }
-        console.log("reviews by id:", reviewsByUserId)
+        //console.log("reviews by id:", reviewsByUserId)
 
         return h.response({
             reviewsByUserId: reviewsByUserId
@@ -128,16 +128,16 @@ exports.deleteReview = async (request, h) => {
 
         //Hämtar id för review från url
         const reviewId = request.params._id;
-        console.log("reviewId:", reviewId);
+        //console.log("reviewId:", reviewId);
 
         const review = await Review.findById(reviewId);
         if (!review) {
             return h.response({ message: "Bokrecensionen finns inte" }).code(404);
         }
-        console.log("review:", review);
+        //console.log("review:", review);
 
         const userExists = await User.findById(review.userId);
-        console.log("Userexists:", userExists)
+        //console.log("Userexists:", userExists)
 
         //Hämtar token från cookie
         const token = request.state.jwt;
@@ -155,7 +155,7 @@ exports.deleteReview = async (request, h) => {
 
         //Ta bort recensionen
         await Review.findByIdAndDelete(reviewId);
-        console.log("Bokrecension borttagen:", reviewId)
+        //console.log("Bokrecension borttagen:", reviewId)
         return h.response({ message: "Bokrecensionen har raderats" }).code(200);
 
 
@@ -171,7 +171,7 @@ exports.updateReview = async (request, h) => {
     try {
         const reviewId = request.params._id;
 
-        console.log(reviewId);
+        //console.log(reviewId);
         //Hämtar review id
         const review = await Review.findById(reviewId);
 
@@ -228,8 +228,8 @@ exports.addLikeToReview = async (request, h) => {
         const like = request.payload.like;
 
 
-        console.log(reviewId);
-        console.log("like:", like)
+        //console.log(reviewId);
+        //console.log("like:", like)
         //Hämtar review id
         const review = await Review.findById(reviewId);
 
@@ -243,7 +243,7 @@ exports.addLikeToReview = async (request, h) => {
 
         //Hämta userId från token
         const userIdFromToken = await getUserId(token);
-        console.log("userId:", userIdFromToken);
+        //console.log("userId:", userIdFromToken);
 
         if (!userIdFromToken) {
             return h.response({ message: "Användaren har inte tillgång till recensionen" }).code(403);
@@ -255,8 +255,8 @@ exports.addLikeToReview = async (request, h) => {
 
         if (like) {
             //Kontrollerar om användaren har likeat tidigare
-            console.log("review:", review)
-            console.log("reviewLike:", review.like)
+            //console.log("review:", review)
+            //console.log("reviewLike:", review.like)
             if (review.like.includes(userIdFromToken)) {
                 return h.response({ message: 'Du har redan like:at denna recension' }).code(400);
             }
@@ -265,7 +265,7 @@ exports.addLikeToReview = async (request, h) => {
 
         } else {
       
-            //Tar bort like
+            //Tar bort like utifrån userId
             const index = review.like.indexOf(userIdFromToken);
             if (index > -1) { 
                 review.like.splice(index, 1); 
